@@ -1,0 +1,14 @@
+{
+  "project": {
+    "name": "ClarityCanvas MVP",
+    "description": "Capacity and risk dashboard for instructional design teams",
+    "stack": ["Next.js 14", "TypeScript", "PostgreSQL", "Prisma", "TailwindCSS"]
+  },
+  "conventions": {
+    "codeStyle": "Use strict TypeScript with explicit types",
+    "components": "Prefer React Server Components for data fetching",
+    "dataLayer": "All database access through data/ layer functions",
+    "businessLogic": "All business rules in domain/ for testability",
+    "forms": "Use react-hook-form with zod validation"
+  }
+}

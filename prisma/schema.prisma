@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String?
+  role      String    @default("member")
+  teams     TeamUser[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Team {
+  id         String             @id @default(cuid())
+  name       String
+  users      TeamUser[]
+  projects   Project[]
+  capacities DesignerCapacity[]
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+
+  @@index([name])
+}
+
+model TeamUser {
+  id        String   @id @default(cuid())
+  team      Team     @relation(fields: [teamId], references: [id])
+  teamId    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  role      String   @default("member")
+
+  @@unique([teamId, userId])
+}
+
+model Project {
+  id                    String   @id @default(cuid())
+  team                  Team     @relation(fields: [teamId], references: [id])
+  teamId                String
+  title                 String
+  client                String
+  instructionalDesigner String
+  status                String   // PLANNING, IN_PROGRESS, REVIEW, HANDOVER
+  dueDate               DateTime
+  estimatedScopedHours  Float
+  hoursWorked           Float    @default(0)
+  notes                 String?
+  tasks                 Task[]
+  createdBy             String
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([teamId])
+  @@index([status])
+  @@index([dueDate])
+}
+
+model Task {
+  id             String   @id @default(cuid())
+  project        Project  @relation(fields: [projectId], references: [id])
+  projectId      String
+  name           String
+  completed      Boolean  @default(false)
+  estimatedHours Float?
+
+  @@index([projectId])
+}
+
+model DesignerCapacity {
+  id                   String   @id @default(cuid())
+  team                 Team     @relation(fields: [teamId], references: [id])
+  teamId               String
+  designerName         String
+  weeklyAvailableHours Float
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@unique([teamId, designerName])
+  @@index([teamId])
+}
