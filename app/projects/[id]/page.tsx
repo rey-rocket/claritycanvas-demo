@@ -11,6 +11,8 @@ import { getActiveTimer } from "@/app/actions/timeEntries";
 import { Pencil } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: { id: string };
 };

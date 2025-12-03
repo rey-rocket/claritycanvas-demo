@@ -3,6 +3,7 @@ import { getCurrentTeamId } from "@/lib/team-context";
 import { CapacityTable } from "@/components/CapacityTable";
 import { CapacityForm } from "@/components/CapacityForm";
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default async function CapacityPage() {

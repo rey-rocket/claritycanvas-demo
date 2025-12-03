@@ -6,6 +6,7 @@ import { calculateRiskFlags } from "@/domain/risk";
 import { ProjectFilters as FilterComponent } from "@/components/ProjectFilters";
 import { ProjectStatus } from "@/lib/types";
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 type Props = {

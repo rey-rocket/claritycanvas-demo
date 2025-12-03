@@ -8,6 +8,7 @@ import { CapacityRing } from "@/components/CapacityRing";
 import { WorkloadChart } from "@/components/WorkloadChart";
 import { ExportButton } from "@/components/ExportButton";
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 0; // always fresh in MVP
 
 export default async function DashboardPage() {
