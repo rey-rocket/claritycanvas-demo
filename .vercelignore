@@ -1,0 +1,8 @@
+node_modules
+.next
+.env.local
+.env*.local
+screenshot-dashboard.png
+screenshot-dashboard-final.png
+*.log
+.DS_Store

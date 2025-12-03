@@ -219,6 +219,39 @@ See `docs/PRD.md` for full product requirements.
 - `docs/Technical_Design.md` - Technical architecture
 - `docs/ProjectPlan.md` - Development milestones
 
+## Deployment
+
+### Deploy to Vercel
+
+This project is optimized for Vercel deployment:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/rey-rocket/claritycanvas-demo)
+
+### Manual Deployment Steps
+
+1. Push your code to GitHub
+2. Import the project in Vercel
+3. Set environment variables (if using PostgreSQL)
+4. Deploy!
+
+Vercel will automatically:
+- Detect Next.js framework
+- Run build commands
+- Set up serverless functions
+- Enable automatic deployments on push
+
+## Design System
+
+ClarityCanvas features a polished, modern UI with:
+
+- **Colors**: Teal (#2F7379) & Lime (#ABCA20) primary palette
+- **Typography**: Poppins (display) + Inter (body)
+- **Micro-interactions**: Smooth hover effects and animations
+- **Components**: Card-based layout with elevation shadows
+- **Responsive**: Optimized for desktop and mobile
+
+See `brand_guide.md` for full design specifications.
+
 ## License
 
 MIT
@@ -226,3 +259,4 @@ MIT
 ---
 
 Built with ❤️ for instructional design teams
+🤖 UI enhanced with Claude Code
