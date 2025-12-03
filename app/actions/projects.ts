@@ -10,8 +10,11 @@ const createProjectSchema = z.object({
   client: z.string().min(1, "Client is required").max(200),
   instructionalDesigner: z.string().min(1, "Designer is required").max(200),
   status: z.enum([ProjectStatus.PLANNING, ProjectStatus.IN_PROGRESS, ProjectStatus.REVIEW, ProjectStatus.HANDOVER]),
+  priority: z.string().optional(),
   dueDate: z.string().min(1, "Due date is required"),
+  earlyReminderDate: z.string().optional(),
   estimatedScopedHours: z.coerce.number().min(0.5, "Hours must be at least 0.5"),
+  mediaBudget: z.string().optional(),
   notes: z.string().optional()
 });
 
@@ -21,9 +24,12 @@ const updateProjectSchema = z.object({
   client: z.string().min(1, "Client is required").max(200).optional(),
   instructionalDesigner: z.string().min(1, "Designer is required").max(200).optional(),
   status: z.enum([ProjectStatus.PLANNING, ProjectStatus.IN_PROGRESS, ProjectStatus.REVIEW, ProjectStatus.HANDOVER]).optional(),
+  priority: z.string().optional(),
   dueDate: z.string().optional(),
+  earlyReminderDate: z.string().optional(),
   estimatedScopedHours: z.coerce.number().min(0.5).optional(),
   hoursWorked: z.coerce.number().min(0).optional(),
+  mediaBudget: z.string().optional(),
   notes: z.string().optional()
 });
 
@@ -39,8 +45,11 @@ export async function createProject(formData: FormData): Promise<ActionResult> {
     client: formData.get("client"),
     instructionalDesigner: formData.get("instructionalDesigner"),
     status: formData.get("status"),
+    priority: formData.get("priority"),
     dueDate: formData.get("dueDate"),
+    earlyReminderDate: formData.get("earlyReminderDate"),
     estimatedScopedHours: formData.get("estimatedScopedHours"),
+    mediaBudget: formData.get("mediaBudget"),
     notes: formData.get("notes")
   };
 
@@ -71,8 +80,11 @@ export async function createProject(formData: FormData): Promise<ActionResult> {
         client: data.client,
         instructionalDesigner: data.instructionalDesigner,
         status: data.status,
+        priority: data.priority || null,
         dueDate: new Date(data.dueDate),
+        earlyReminderDate: data.earlyReminderDate ? new Date(data.earlyReminderDate) : null,
         estimatedScopedHours: data.estimatedScopedHours,
+        mediaBudget: data.mediaBudget || null,
         notes: data.notes || null,
         createdBy: "user" // In production, from auth context
       }
@@ -95,9 +107,12 @@ export async function updateProject(formData: FormData): Promise<ActionResult> {
     client: formData.get("client") || undefined,
     instructionalDesigner: formData.get("instructionalDesigner") || undefined,
     status: formData.get("status") || undefined,
+    priority: formData.get("priority") || undefined,
     dueDate: formData.get("dueDate") || undefined,
+    earlyReminderDate: formData.get("earlyReminderDate") || undefined,
     estimatedScopedHours: formData.get("estimatedScopedHours") || undefined,
     hoursWorked: formData.get("hoursWorked") || undefined,
+    mediaBudget: formData.get("mediaBudget") || undefined,
     notes: formData.get("notes")
   };
 
@@ -121,8 +136,12 @@ export async function updateProject(formData: FormData): Promise<ActionResult> {
       dataToUpdate.instructionalDesigner = updateData.instructionalDesigner;
     }
     if (updateData.status !== undefined) dataToUpdate.status = updateData.status;
+    if (updateData.priority !== undefined) dataToUpdate.priority = updateData.priority || null;
     if (updateData.dueDate !== undefined) {
       dataToUpdate.dueDate = new Date(updateData.dueDate);
+    }
+    if (updateData.earlyReminderDate !== undefined) {
+      dataToUpdate.earlyReminderDate = updateData.earlyReminderDate ? new Date(updateData.earlyReminderDate) : null;
     }
     if (updateData.estimatedScopedHours !== undefined) {
       dataToUpdate.estimatedScopedHours = updateData.estimatedScopedHours;
@@ -130,6 +149,7 @@ export async function updateProject(formData: FormData): Promise<ActionResult> {
     if (updateData.hoursWorked !== undefined) {
       dataToUpdate.hoursWorked = updateData.hoursWorked;
     }
+    if (updateData.mediaBudget !== undefined) dataToUpdate.mediaBudget = updateData.mediaBudget || null;
     if (updateData.notes !== undefined) dataToUpdate.notes = updateData.notes || null;
 
     const project = await prisma.project.update({

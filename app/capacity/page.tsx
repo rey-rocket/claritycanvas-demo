@@ -1,25 +1,27 @@
 import { getAllDesignerCapacities } from "@/data/capacities";
+import { getCurrentTeamId } from "@/lib/team-context";
 import { CapacityTable } from "@/components/CapacityTable";
 import { CapacityForm } from "@/components/CapacityForm";
 
 export const revalidate = 0;
 
 export default async function CapacityPage() {
-  const capacities = await getAllDesignerCapacities();
+  const teamId = await getCurrentTeamId();
+  const capacities = await getAllDesignerCapacities(teamId);
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="max-w-2xl space-y-section">
       <div>
-        <h1 className="text-2xl font-semibold">Designer Capacity</h1>
-        <p className="mt-1 text-sm text-slate-400">
-          Manage weekly available hours for each instructional designer.
+        <h1 className="font-display text-3xl font-bold tracking-tight text-cc-teal-dark">Designer Capacity</h1>
+        <p className="mt-2 text-sm text-cc-text-muted">
+          Manage weekly available hours for each instructional designer
         </p>
       </div>
 
       <CapacityTable capacities={capacities} />
 
-      <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
-        <h2 className="mb-4 text-sm font-semibold">Add Designer</h2>
+      <div className="rounded-md border-0 bg-cc-surface p-card shadow-tile">
+        <h2 className="mb-4 font-display text-sm font-semibold text-cc-teal-dark">Add Designer</h2>
         <CapacityForm />
       </div>
     </div>

@@ -20,7 +20,7 @@ function SubmitButton({ isEdit }: { isEdit: boolean }) {
     <button
       type="submit"
       disabled={pending}
-      className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-emerald-400 disabled:opacity-50"
+      className="rounded-lg bg-teal-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-teal-400 disabled:opacity-50"
     >
       {pending ? "Saving..." : isEdit ? "Update" : "Add Designer"}
     </button>
@@ -53,7 +53,7 @@ export function CapacityForm({ capacity, onSuccess }: CapacityFormProps) {
       {isEdit && <input type="hidden" name="id" value={capacity.id} />}
 
       {error && (
-        <div className="rounded-lg bg-red-500/20 p-3 text-sm text-red-300">
+        <div className="rounded-lg bg-red-100 p-3 text-sm text-red-700 dark:bg-red-500/20 dark:text-red-300">
           {error}
         </div>
       )}
@@ -62,7 +62,7 @@ export function CapacityForm({ capacity, onSuccess }: CapacityFormProps) {
         <div>
           <label
             htmlFor="designerName"
-            className="mb-1 block text-sm text-slate-400"
+            className="mb-1 block text-sm text-slate-600 dark:text-slate-400"
           >
             Designer Name *
           </label>
@@ -71,7 +71,7 @@ export function CapacityForm({ capacity, onSuccess }: CapacityFormProps) {
             id="designerName"
             name="designerName"
             required
-            className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none"
+            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-teal-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
           />
         </div>
       )}
@@ -79,7 +79,7 @@ export function CapacityForm({ capacity, onSuccess }: CapacityFormProps) {
       <div>
         <label
           htmlFor="weeklyAvailableHours"
-          className="mb-1 block text-sm text-slate-400"
+          className="mb-1 block text-sm text-slate-600 dark:text-slate-400"
         >
           Weekly Available Hours *
         </label>
@@ -92,7 +92,7 @@ export function CapacityForm({ capacity, onSuccess }: CapacityFormProps) {
           max="168"
           step="0.5"
           defaultValue={capacity?.weeklyAvailableHours ?? 40}
-          className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none"
+          className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-teal-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
         />
       </div>
 

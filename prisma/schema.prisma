@@ -41,21 +41,25 @@ model TeamUser {
 }
 
 model Project {
-  id                    String   @id @default(cuid())
-  team                  Team     @relation(fields: [teamId], references: [id])
+  id                    String      @id @default(cuid())
+  team                  Team        @relation(fields: [teamId], references: [id])
   teamId                String
   title                 String
   client                String
   instructionalDesigner String
-  status                String   // PLANNING, IN_PROGRESS, REVIEW, HANDOVER
+  status                String      // PLANNING, IN_PROGRESS, REVIEW, HANDOVER
+  priority              String?     // A, B, C
   dueDate               DateTime
+  earlyReminderDate     DateTime?
   estimatedScopedHours  Float
-  hoursWorked           Float    @default(0)
+  hoursWorked           Float       @default(0)
+  mediaBudget           String?
   notes                 String?
   tasks                 Task[]
+  timeEntries           TimeEntry[]
   createdBy             String
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
 
   @@index([teamId])
   @@index([status])
@@ -84,4 +88,23 @@ model DesignerCapacity {
 
   @@unique([teamId, designerName])
   @@index([teamId])
+}
+
+model TimeEntry {
+  id             String    @id @default(cuid())
+  project        Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId      String
+  designerName   String
+  description    String?
+  hours          Float
+  date           DateTime
+  isTimerEntry   Boolean   @default(false)
+  timerStartedAt DateTime?
+  timerEndedAt   DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([projectId])
+  @@index([designerName])
+  @@index([date])
 }

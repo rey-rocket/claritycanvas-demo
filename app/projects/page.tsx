@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getAllProjects, type ProjectFilters } from "@/data/projects";
 import { getAllDesignerCapacities } from "@/data/capacities";
+import { getCurrentTeamId } from "@/lib/team-context";
 import { calculateRiskFlags } from "@/domain/risk";
 import { ProjectFilters as FilterComponent } from "@/components/ProjectFilters";
 import { ProjectStatus } from "@/lib/types";
@@ -12,6 +13,8 @@ type Props = {
 };
 
 export default async function ProjectsPage({ searchParams }: Props) {
+  const teamId = await getCurrentTeamId();
+
   const filters: ProjectFilters = {};
 
   if (searchParams.designer) {
@@ -25,8 +28,8 @@ export default async function ProjectsPage({ searchParams }: Props) {
   }
 
   const [projects, capacities] = await Promise.all([
-    getAllProjects(filters),
-    getAllDesignerCapacities()
+    getAllProjects(teamId, filters),
+    getAllDesignerCapacities(teamId)
   ]);
 
   const designers = [...new Set([
@@ -35,79 +38,103 @@ export default async function ProjectsPage({ searchParams }: Props) {
   ])].sort();
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-section">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Projects</h1>
+        <div>
+          <h1 className="font-display text-3xl font-bold tracking-tight text-cc-teal-dark">Projects</h1>
+          <p className="mt-2 text-sm text-cc-text-muted">
+            Manage and track all instructional design projects
+          </p>
+        </div>
         <Link
           href="/projects/new"
-          className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-emerald-400"
+          className="rounded-pill bg-gradient-cc-primary px-6 py-2 text-sm font-display font-semibold text-white shadow-btn-primary transition-all hover:shadow-btn-secondary"
         >
-          New Project
+          + New Project
         </Link>
       </div>
 
       <FilterComponent designers={designers} />
 
-      <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-900/60">
+      <div className="overflow-x-auto rounded-md border-0 bg-cc-surface shadow-card">
         <table className="min-w-full text-sm">
-          <thead className="bg-slate-900/80 text-slate-400">
+          <thead className="bg-cc-surface-soft text-cc-text-muted">
             <tr>
-              <th className="px-4 py-2 text-left">Title</th>
-              <th className="px-4 py-2 text-left">Client</th>
-              <th className="px-4 py-2 text-left">Designer</th>
-              <th className="px-4 py-2 text-left">Status</th>
-              <th className="px-4 py-2 text-left">Due</th>
-              <th className="px-4 py-2 text-left">Flags</th>
+              <th className="px-6 py-3 text-left font-display font-semibold text-xs uppercase tracking-wide">Title</th>
+              <th className="px-6 py-3 text-left font-display font-semibold text-xs uppercase tracking-wide">Client</th>
+              <th className="px-6 py-3 text-left font-display font-semibold text-xs uppercase tracking-wide">Designer</th>
+              <th className="px-6 py-3 text-left font-display font-semibold text-xs uppercase tracking-wide">Priority</th>
+              <th className="px-6 py-3 text-left font-display font-semibold text-xs uppercase tracking-wide">Status</th>
+              <th className="px-6 py-3 text-left font-display font-semibold text-xs uppercase tracking-wide">Due</th>
+              <th className="px-6 py-3 text-left font-display font-semibold text-xs uppercase tracking-wide">Flags</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="text-cc-text-main">
             {projects.map((project) => {
               const risk = calculateRiskFlags(project);
               return (
                 <tr
                   key={project.id}
-                  className="border-t border-slate-800 hover:bg-slate-900"
+                  className="border-t border-cc-border-subtle hover:bg-cc-surface-soft/30 transition-colors"
                 >
-                  <td className="px-4 py-2">
+                  <td className="px-6 py-3">
                     <Link
                       href={`/projects/${project.id}`}
-                      className="text-emerald-300 hover:underline"
+                      className="font-medium text-cc-teal hover:text-cc-teal-dark hover:underline"
                     >
                       {project.title}
                     </Link>
                   </td>
-                  <td className="px-4 py-2">{project.client}</td>
-                  <td className="px-4 py-2">
+                  <td className="px-6 py-3">{project.client}</td>
+                  <td className="px-6 py-3">
                     {project.instructionalDesigner}
                   </td>
-                  <td className="px-4 py-2">
+                  <td className="px-6 py-3">
+                    {project.priority ? (
+                      <span
+                        className={
+                          "rounded-pill px-2 py-0.5 text-xs font-medium " +
+                          (project.priority === "A"
+                            ? "bg-cc-red-pill/10 text-cc-red-pill"
+                            : project.priority === "B"
+                            ? "bg-cc-coral/10 text-cc-coral"
+                            : "bg-cc-blue-pill text-cc-blue-pill-text")
+                        }
+                      >
+                        Priority {project.priority}
+                      </span>
+                    ) : (
+                      <span className="text-cc-text-soft">-</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-3">
                     <span
                       className={
-                        "rounded-full px-2 py-0.5 text-xs " +
+                        "rounded-pill px-2 py-0.5 text-xs font-medium " +
                         (project.status === ProjectStatus.HANDOVER
-                          ? "bg-slate-700 text-slate-300"
+                          ? "bg-cc-text-soft/10 text-cc-text-muted"
                           : project.status === ProjectStatus.REVIEW
-                          ? "bg-blue-500/20 text-blue-300"
+                          ? "bg-cc-blue-pill text-cc-blue-pill-text"
                           : project.status === ProjectStatus.IN_PROGRESS
-                          ? "bg-emerald-500/20 text-emerald-300"
-                          : "bg-amber-500/20 text-amber-300")
+                          ? "bg-cc-surface-soft text-cc-teal-dark"
+                          : "bg-cc-lime-soft/30 text-cc-teal-dark")
                       }
                     >
                       {project.status.replace("_", " ")}
                     </span>
                   </td>
-                  <td className="px-4 py-2 text-xs text-slate-400">
+                  <td className="px-6 py-3 text-xs text-cc-text-muted">
                     {project.dueDate.toDateString()}
                   </td>
-                  <td className="px-4 py-2 text-xs">
+                  <td className="px-6 py-3 text-xs">
                     <div className="flex gap-2">
                       {risk.isOverBudget && (
-                        <span className="rounded-full bg-red-500/20 px-2 py-0.5 text-red-300">
+                        <span className="rounded-pill bg-cc-red-pill/10 px-2 py-0.5 font-medium text-cc-red-pill">
                           Over budget
                         </span>
                       )}
                       {risk.isAtRisk && (
-                        <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-amber-300">
+                        <span className="rounded-pill bg-cc-coral/10 px-2 py-0.5 font-medium text-cc-coral">
                           At risk
                         </span>
                       )}
@@ -119,8 +146,8 @@ export default async function ProjectsPage({ searchParams }: Props) {
             {projects.length === 0 && (
               <tr>
                 <td
-                  colSpan={6}
-                  className="px-4 py-8 text-center text-sm text-slate-500"
+                  colSpan={7}
+                  className="px-4 py-8 text-center text-sm text-cc-text-muted"
                 >
                   {Object.keys(filters).length > 0
                     ? "No projects match the current filters."

@@ -12,9 +12,12 @@ type ProjectFormProps = {
     client: string;
     instructionalDesigner: string;
     status: string;
+    priority: string | null;
     dueDate: Date;
+    earlyReminderDate: Date | null;
     estimatedScopedHours: number;
     hoursWorked: number;
+    mediaBudget: string | null;
     notes: string | null;
   };
   designers?: string[];
@@ -28,7 +31,7 @@ function SubmitButton({ isEdit }: { isEdit: boolean }) {
     <button
       type="submit"
       disabled={pending}
-      className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-emerald-400 disabled:opacity-50"
+      className="btn-primary rounded-pill bg-gradient-cc-primary px-8 py-3 text-sm font-display font-semibold text-white shadow-btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
     >
       {pending ? "Saving..." : isEdit ? "Update Project" : "Create Project"}
     </button>
@@ -65,13 +68,13 @@ export function ProjectForm({ project, designers = [], onSuccess }: ProjectFormP
       {isEdit && <input type="hidden" name="id" value={project.id} />}
 
       {error && (
-        <div className="rounded-lg bg-red-500/20 p-3 text-sm text-red-300">
+        <div className="rounded-lg bg-cc-red-pill/10 p-4 text-sm font-medium text-cc-red-pill border border-cc-red-pill/20">
           {error}
         </div>
       )}
 
       <div>
-        <label htmlFor="title" className="mb-1 block text-sm text-slate-400">
+        <label htmlFor="title" className="mb-2 block text-sm font-medium text-cc-text-muted">
           Title *
         </label>
         <input
@@ -80,13 +83,13 @@ export function ProjectForm({ project, designers = [], onSuccess }: ProjectFormP
           name="title"
           required
           defaultValue={project?.title}
-          className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none"
+          className="w-full rounded-lg border-2 border-cc-border-subtle bg-cc-surface px-4 py-2.5 text-sm text-cc-text-main transition-all focus:border-cc-teal focus:outline-none focus:ring-2 focus:ring-cc-teal/20"
         />
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label htmlFor="client" className="mb-1 block text-sm text-slate-400">
+          <label htmlFor="client" className="mb-2 block text-sm font-medium text-cc-text-muted">
             Client *
           </label>
           <input
@@ -95,14 +98,14 @@ export function ProjectForm({ project, designers = [], onSuccess }: ProjectFormP
             name="client"
             required
             defaultValue={project?.client}
-            className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none"
+            className="w-full rounded-lg border-2 border-cc-border-subtle bg-cc-surface px-4 py-2.5 text-sm text-cc-text-main transition-all focus:border-cc-teal focus:outline-none focus:ring-2 focus:ring-cc-teal/20"
           />
         </div>
 
         <div>
           <label
             htmlFor="instructionalDesigner"
-            className="mb-1 block text-sm text-slate-400"
+            className="mb-1 block text-sm font-medium text-cc-text-muted"
           >
             Instructional Designer *
           </label>
@@ -112,7 +115,7 @@ export function ProjectForm({ project, designers = [], onSuccess }: ProjectFormP
               name="instructionalDesigner"
               required
               defaultValue={project?.instructionalDesigner || ""}
-              className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none"
+              className="w-full rounded-lg border-2 border-cc-border-subtle bg-cc-surface px-4 py-2.5 text-sm text-cc-text-main transition-all focus:border-cc-teal focus:outline-none focus:ring-2 focus:ring-cc-teal/20"
             >
               <option value="">Select designer...</option>
               {designers.map((designer) => (
@@ -128,7 +131,7 @@ export function ProjectForm({ project, designers = [], onSuccess }: ProjectFormP
               name="instructionalDesigner"
               required
               defaultValue={project?.instructionalDesigner}
-              className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none"
+              className="w-full rounded-lg border-2 border-cc-border-subtle bg-cc-surface px-4 py-2.5 text-sm text-cc-text-main transition-all focus:border-cc-teal focus:outline-none focus:ring-2 focus:ring-cc-teal/20"
             />
           )}
         </div>
@@ -136,7 +139,7 @@ export function ProjectForm({ project, designers = [], onSuccess }: ProjectFormP
 
       <div className="grid gap-4 md:grid-cols-3">
         <div>
-          <label htmlFor="status" className="mb-1 block text-sm text-slate-400">
+          <label htmlFor="status" className="mb-1 block text-sm font-medium text-cc-text-muted">
             Status *
           </label>
           <select
@@ -144,7 +147,7 @@ export function ProjectForm({ project, designers = [], onSuccess }: ProjectFormP
             name="status"
             required
             defaultValue={project?.status || "PLANNING"}
-            className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none"
+            className="w-full rounded-lg border-2 border-cc-border-subtle bg-cc-surface px-4 py-2.5 text-sm text-cc-text-main transition-all focus:border-cc-teal focus:outline-none focus:ring-2 focus:ring-cc-teal/20"
           >
             <option value="PLANNING">Planning</option>
             <option value="IN_PROGRESS">In Progress</option>
@@ -154,23 +157,26 @@ export function ProjectForm({ project, designers = [], onSuccess }: ProjectFormP
         </div>
 
         <div>
-          <label htmlFor="dueDate" className="mb-1 block text-sm text-slate-400">
-            Due Date *
+          <label htmlFor="priority" className="mb-1 block text-sm font-medium text-cc-text-muted">
+            Priority
           </label>
-          <input
-            type="date"
-            id="dueDate"
-            name="dueDate"
-            required
-            defaultValue={project ? formatDate(project.dueDate) : ""}
-            className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none"
-          />
+          <select
+            id="priority"
+            name="priority"
+            defaultValue={project?.priority || ""}
+            className="w-full rounded-lg border-2 border-cc-border-subtle bg-cc-surface px-4 py-2.5 text-sm text-cc-text-main transition-all focus:border-cc-teal focus:outline-none focus:ring-2 focus:ring-cc-teal/20"
+          >
+            <option value="">None</option>
+            <option value="A">Priority A</option>
+            <option value="B">Priority B</option>
+            <option value="C">Priority C</option>
+          </select>
         </div>
 
         <div>
           <label
             htmlFor="estimatedScopedHours"
-            className="mb-1 block text-sm text-slate-400"
+            className="mb-1 block text-sm font-medium text-cc-text-muted"
           >
             Scoped Hours *
           </label>
@@ -182,7 +188,36 @@ export function ProjectForm({ project, designers = [], onSuccess }: ProjectFormP
             min="0.5"
             step="0.5"
             defaultValue={project?.estimatedScopedHours}
-            className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none"
+            className="w-full rounded-lg border-2 border-cc-border-subtle bg-cc-surface px-4 py-2.5 text-sm text-cc-text-main transition-all focus:border-cc-teal focus:outline-none focus:ring-2 focus:ring-cc-teal/20"
+          />
+        </div>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <div>
+          <label htmlFor="dueDate" className="mb-1 block text-sm font-medium text-cc-text-muted">
+            Due Date *
+          </label>
+          <input
+            type="date"
+            id="dueDate"
+            name="dueDate"
+            required
+            defaultValue={project ? formatDate(project.dueDate) : ""}
+            className="w-full rounded-lg border-2 border-cc-border-subtle bg-cc-surface px-4 py-2.5 text-sm text-cc-text-main transition-all focus:border-cc-teal focus:outline-none focus:ring-2 focus:ring-cc-teal/20"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="earlyReminderDate" className="mb-1 block text-sm font-medium text-cc-text-muted">
+            Early Reminder Date
+          </label>
+          <input
+            type="date"
+            id="earlyReminderDate"
+            name="earlyReminderDate"
+            defaultValue={project?.earlyReminderDate ? formatDate(project.earlyReminderDate) : ""}
+            className="w-full rounded-lg border-2 border-cc-border-subtle bg-cc-surface px-4 py-2.5 text-sm text-cc-text-main transition-all focus:border-cc-teal focus:outline-none focus:ring-2 focus:ring-cc-teal/20"
           />
         </div>
       </div>
@@ -191,7 +226,7 @@ export function ProjectForm({ project, designers = [], onSuccess }: ProjectFormP
         <div>
           <label
             htmlFor="hoursWorked"
-            className="mb-1 block text-sm text-slate-400"
+            className="mb-1 block text-sm font-medium text-cc-text-muted"
           >
             Hours Worked
           </label>
@@ -202,13 +237,27 @@ export function ProjectForm({ project, designers = [], onSuccess }: ProjectFormP
             min="0"
             step="0.5"
             defaultValue={project.hoursWorked}
-            className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none"
+            className="w-full rounded-lg border-2 border-cc-border-subtle bg-cc-surface px-4 py-2.5 text-sm text-cc-text-main transition-all focus:border-cc-teal focus:outline-none focus:ring-2 focus:ring-cc-teal/20"
           />
         </div>
       )}
 
       <div>
-        <label htmlFor="notes" className="mb-1 block text-sm text-slate-400">
+        <label htmlFor="mediaBudget" className="mb-1 block text-sm font-medium text-cc-text-muted">
+          Media Budget
+        </label>
+        <input
+          type="text"
+          id="mediaBudget"
+          name="mediaBudget"
+          placeholder="e.g., Videos: 4 hrs, Podcast Series: 10 hrs"
+          defaultValue={project?.mediaBudget || ""}
+          className="w-full rounded-lg border-2 border-cc-border-subtle bg-cc-surface px-4 py-2.5 text-sm text-cc-text-main transition-all focus:border-cc-teal focus:outline-none focus:ring-2 focus:ring-cc-teal/20"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="notes" className="mb-1 block text-sm font-medium text-cc-text-muted">
           Notes
         </label>
         <textarea
@@ -216,7 +265,7 @@ export function ProjectForm({ project, designers = [], onSuccess }: ProjectFormP
           name="notes"
           rows={4}
           defaultValue={project?.notes || ""}
-          className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none"
+          className="w-full rounded-lg border-2 border-cc-border-subtle bg-cc-surface px-4 py-2.5 text-sm text-cc-text-main transition-all focus:border-cc-teal focus:outline-none focus:ring-2 focus:ring-cc-teal/20"
         />
       </div>
 

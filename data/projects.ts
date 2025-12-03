@@ -2,8 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { ProjectStatusType } from "@/lib/types";
 
 /**
- * For MVP we ignore auth/team and just return all projects.
- * Later, pass a teamId/userId and scope queries appropriately.
+ * All queries are now team-scoped for proper multi-tenancy
  */
 
 export type ProjectFilters = {
@@ -11,8 +10,10 @@ export type ProjectFilters = {
   status?: ProjectStatusType;
 };
 
-export async function getAllProjects(filters?: ProjectFilters) {
-  const where: Record<string, unknown> = {};
+export async function getAllProjects(teamId: string, filters?: ProjectFilters) {
+  const where: Record<string, unknown> = {
+    teamId // Always filter by team
+  };
 
   if (filters?.designer) {
     where.instructionalDesigner = filters.designer;
@@ -27,9 +28,12 @@ export async function getAllProjects(filters?: ProjectFilters) {
   });
 }
 
-export async function getProjectById(id: string) {
-  return prisma.project.findUnique({
-    where: { id },
+export async function getProjectById(id: string, teamId: string) {
+  return prisma.project.findFirst({
+    where: {
+      id,
+      teamId // Ensure project belongs to team
+    },
     include: { tasks: true }
   });
 }

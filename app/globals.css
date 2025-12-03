@@ -1,8 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Clarity Canvas Brand Colors */
+  --cc-teal: #2F7379;
+  --cc-teal-dark: #246C6C;
+  --cc-lime: #ABCA20;
+  --cc-lime-soft: #D7E77C;
+  --cc-coral: #FF6F61;
+  --cc-blue-pill: #D9E4FF;
+  --cc-blue-pill-text: #3056D3;
+  --cc-red-pill: #FF4A4A;
+  --cc-green-good: #36A852;
+
+  --cc-bg: #F9FAFB;
+  --cc-surface: #FFFFFF;
+  --cc-surface-soft: #E9FBF7;
+  --cc-border-subtle: #E5E7EB;
+  --cc-border-strong: #D1D5DB;
+  --cc-text-main: #111827;
+  --cc-text-muted: #6B7280;
+  --cc-text-soft: #9CA3AF;
+
+  --cc-gradient-primary: linear-gradient(90deg, #246C6C 0%, #ABCA20 100%);
+
+  /* Typography */
+  --cc-font-display: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --cc-font-body: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Radii */
+  --cc-radius-lg: 20px;
+  --cc-radius-md: 16px;
+  --cc-radius-sm: 12px;
+  --cc-radius-pill: 9999px;
+
+  /* Spacing */
+  --cc-space-page: 32px;
+  --cc-space-section: 24px;
+  --cc-space-card: 24px;
+
+  /* Shadows */
+  --cc-shadow-card: 0 14px 28px rgba(15, 23, 42, 0.08);
+  --cc-shadow-tile: 0 10px 18px rgba(15, 23, 42, 0.06);
+  --cc-shadow-btn-primary: 0 10px 20px rgba(36, 108, 108, 0.25);
+  --cc-shadow-btn-secondary: 0 6px 15px rgba(15, 23, 42, 0.06);
+  --cc-shadow-soft: 0 6px 14px rgba(15, 23, 42, 0.04);
+}
+
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-    "SF Pro Display", "Segoe UI", sans-serif;
+  font-family: var(--cc-font-body);
+  background-color: var(--cc-bg);
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(171, 202, 32, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(47, 115, 121, 0.03) 0%, transparent 50%);
+  background-attachment: fixed;
+  color: var(--cc-text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--cc-font-display);
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--cc-shadow-card);
+}
+
+/* Button interactions */
+.btn-primary {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--cc-shadow-btn-primary);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Focus rings with brand color */
+:focus-visible {
+  outline: 2px solid var(--cc-teal);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Smooth transitions for interactive elements */
+a, button, input, select, textarea {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cc-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--cc-border-strong);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cc-teal);
 }

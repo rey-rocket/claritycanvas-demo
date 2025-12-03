@@ -36,7 +36,7 @@ export function ProjectFilters({ designers }: ProjectFiltersProps) {
       <select
         value={currentDesigner}
         onChange={(e) => updateFilter("designer", e.target.value)}
-        className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-1.5 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none"
+        className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900 focus:border-teal-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
       >
         <option value="">All Designers</option>
         {designers.map((designer) => (
@@ -49,7 +49,7 @@ export function ProjectFilters({ designers }: ProjectFiltersProps) {
       <select
         value={currentStatus}
         onChange={(e) => updateFilter("status", e.target.value)}
-        className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-1.5 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none"
+        className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900 focus:border-teal-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
       >
         <option value="">All Statuses</option>
         {Object.values(ProjectStatus).map((status) => (
@@ -62,7 +62,7 @@ export function ProjectFilters({ designers }: ProjectFiltersProps) {
       {hasFilters && (
         <button
           onClick={clearFilters}
-          className="text-sm text-slate-400 hover:text-slate-200"
+          className="text-sm text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
         >
           Clear filters
         </button>

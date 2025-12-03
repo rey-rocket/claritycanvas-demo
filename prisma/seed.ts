@@ -68,9 +68,12 @@ async function main() {
       client: "HR Department",
       instructionalDesigner: "Alice Chen",
       status: ProjectStatus.IN_PROGRESS,
+      priority: "A",
       dueDate: addDays(5),
+      earlyReminderDate: addDays(2),
       estimatedScopedHours: 60,
       hoursWorked: 45,
+      mediaBudget: "Videos: 5 hrs, Podcast Series: 10 hrs",
       notes: "Major update to onboarding program. Need to finalize video scripts and review assessment questions. Stakeholder feedback pending on Module 3."
     },
     {
@@ -79,9 +82,12 @@ async function main() {
       client: "Sales Team",
       instructionalDesigner: "Alice Chen",
       status: ProjectStatus.REVIEW,
+      priority: "B",
       dueDate: addDays(10),
+      earlyReminderDate: addDays(8),
       estimatedScopedHours: 40,
       hoursWorked: 38,
+      mediaBudget: "Videos: 4 hrs",
       notes: "Final review with sales leadership scheduled for Friday."
     },
     {
@@ -90,9 +96,12 @@ async function main() {
       client: "Legal",
       instructionalDesigner: "Bob Martinez",
       status: ProjectStatus.IN_PROGRESS,
+      priority: "A",
       dueDate: addDays(3),
+      earlyReminderDate: addDays(1),
       estimatedScopedHours: 30,
       hoursWorked: 35,
+      mediaBudget: null,
       notes: "Over budget due to additional regulatory requirements. Need to discuss scope with Legal team."
     },
     {
@@ -101,9 +110,12 @@ async function main() {
       client: "Executive Team",
       instructionalDesigner: "Carol Williams",
       status: ProjectStatus.PLANNING,
+      priority: "C",
       dueDate: addDays(21),
+      earlyReminderDate: addDays(14),
       estimatedScopedHours: 80,
       hoursWorked: 10,
+      mediaBudget: null,
       notes: "Kickoff meeting completed. Gathering requirements from department heads."
     },
     {
@@ -112,9 +124,12 @@ async function main() {
       client: "Support Team",
       instructionalDesigner: "Carol Williams",
       status: ProjectStatus.IN_PROGRESS,
+      priority: "B",
       dueDate: addDays(7),
+      earlyReminderDate: addDays(5),
       estimatedScopedHours: 45,
       hoursWorked: 30,
+      mediaBudget: "Videos: 3 hrs",
       notes: "Good progress. Interactive scenarios in development."
     },
     {
@@ -123,9 +138,12 @@ async function main() {
       client: "Product Team",
       instructionalDesigner: "David Kim",
       status: ProjectStatus.IN_PROGRESS,
+      priority: "A",
       dueDate: addDays(4),
+      earlyReminderDate: addDays(2),
       estimatedScopedHours: 25,
       hoursWorked: 8,
+      mediaBudget: null,
       notes: "At risk - started late due to delayed requirements. Need to prioritize this week."
     },
     {
@@ -134,9 +152,12 @@ async function main() {
       client: "Operations",
       instructionalDesigner: "Emma Thompson",
       status: ProjectStatus.HANDOVER,
+      priority: "C",
       dueDate: addDays(-2),
+      earlyReminderDate: addDays(-5),
       estimatedScopedHours: 20,
       hoursWorked: 18,
+      mediaBudget: "Videos: 2 hrs",
       notes: "Successfully completed and handed over to Operations team."
     },
     {
@@ -145,9 +166,12 @@ async function main() {
       client: "Engineering",
       instructionalDesigner: "Emma Thompson",
       status: ProjectStatus.IN_PROGRESS,
+      priority: "B",
       dueDate: addDays(14),
+      earlyReminderDate: addDays(10),
       estimatedScopedHours: 35,
       hoursWorked: 15,
+      mediaBudget: null,
       notes: "On track. First draft of workshop materials complete."
     },
     {
@@ -156,9 +180,12 @@ async function main() {
       client: "HR Department",
       instructionalDesigner: "Bob Martinez",
       status: ProjectStatus.PLANNING,
+      priority: "B",
       dueDate: addDays(30),
+      earlyReminderDate: addDays(23),
       estimatedScopedHours: 50,
       hoursWorked: 5,
+      mediaBudget: null,
       notes: "Initial research phase. Consulting with external D&I experts."
     },
     {
@@ -167,9 +194,12 @@ async function main() {
       client: "IT Department",
       instructionalDesigner: "David Kim",
       status: ProjectStatus.REVIEW,
+      priority: "A",
       dueDate: addDays(2),
+      earlyReminderDate: addDays(1),
       estimatedScopedHours: 15,
       hoursWorked: 14,
+      mediaBudget: null,
       notes: "Final review in progress. Minor edits needed."
     }
   ];
@@ -182,9 +212,12 @@ async function main() {
         client: project.client,
         instructionalDesigner: project.instructionalDesigner,
         status: project.status,
+        priority: project.priority,
         dueDate: project.dueDate,
+        earlyReminderDate: project.earlyReminderDate,
         estimatedScopedHours: project.estimatedScopedHours,
         hoursWorked: project.hoursWorked,
+        mediaBudget: project.mediaBudget,
         notes: project.notes
       },
       create: {
@@ -194,9 +227,12 @@ async function main() {
         client: project.client,
         instructionalDesigner: project.instructionalDesigner,
         status: project.status,
+        priority: project.priority,
         dueDate: project.dueDate,
+        earlyReminderDate: project.earlyReminderDate,
         estimatedScopedHours: project.estimatedScopedHours,
         hoursWorked: project.hoursWorked,
+        mediaBudget: project.mediaBudget,
         notes: project.notes,
         createdBy: "seed-script"
       }
